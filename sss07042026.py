@@ -121,11 +121,25 @@ st.markdown("### Filters")
 
 col1, col2, col3, col4 = st.columns(4)
 
-operator = col1.multiselect("Operator", sorted(df["Operator_Code"].unique()))
-service = col2.multiselect("Service", sorted(df["Service"].unique()))
-from_port = col3.multiselect("From Port", sorted(df["From_Port"].unique()))
-to_port = col4.multiselect("To Port", sorted(df["To_Port"].unique()))
+operator = col1.multiselect(
+    "Operator",
+    sorted(df["Operator_Code"].dropna().astype(str).unique())
+)
 
+service = col2.multiselect(
+    "Service",
+    sorted(df["Service"].dropna().astype(str).unique())
+)
+
+from_port = col3.multiselect(
+    "From Port",
+    sorted(df["From_Port"].dropna().astype(str).unique())
+)
+
+to_port = col4.multiselect(
+    "To Port",
+    sorted(df["To_Port"].dropna().astype(str).unique())
+)
 filtered_df = df.copy()
 
 if operator:
