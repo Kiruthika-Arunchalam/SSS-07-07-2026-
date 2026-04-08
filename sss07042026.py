@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+import os
+import zipfile
 # ---------------------------
 # CONFIG
 # ---------------------------
@@ -77,11 +78,20 @@ st.markdown('<div class="title">SSS DATA ANALYTICS DASHBOARD</div>', unsafe_allo
 # ---------------------------
 # LOAD DATA (NO CACHE ISSUE)
 # ---------------------------
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import os
+import zipfile   # ✅ FIX 1
+
+# ---------------------------
+# LOAD DATA
+# ---------------------------
 def load_data():
     zip_files = [f for f in os.listdir() if f.endswith(".zip")]
 
     if not zip_files:
-        st.error("❌ No ZIP file found in directory")
+        st.error("❌ No ZIP file found")
         st.stop()
 
     zip_file = zip_files[0]
@@ -90,18 +100,21 @@ def load_data():
         csv_files = [f for f in z.namelist() if f.endswith(".csv")]
 
         if not csv_files:
-            st.error("❌ No CSV file found inside ZIP")
+            st.error("❌ No CSV inside ZIP")
             st.stop()
 
-        file_name = csv_files[0]
-
-        with z.open(file_name) as f:
+        with z.open(csv_files[0]) as f:
             df = pd.read_csv(f, encoding="cp1252")
 
     return df
 
-df=load_data()
+# ✅ FIX 2 (VERY IMPORTANT)
+df = load_data()
 
+# ---------------------------
+# CLEAN DATA
+# ---------------------------
+df["Operator_Code"] = df["Operator_Code"].astype(str).str.strip()
 # ---------------------------
 # CLEAN DATA
 # ---------------------------
