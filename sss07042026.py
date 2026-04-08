@@ -319,11 +319,26 @@ else:
     st.warning("⚠️ country_lat_lon.csv not found")
     st.stop()
 
-country_df = country_df.rename(columns={
-    "country_code": "Country_Code",
-    "latitude": "Latitude",
-    "longitude": "Longitude"
-})
+country_df.columns = country_df.columns.str.strip()
+
+# auto-handle column names
+if "country_code" in country_df.columns:
+    country_df = country_df.rename(columns={"country_code": "Country_Code"})
+elif "Country" in country_df.columns:
+    country_df = country_df.rename(columns={"Country": "Country_Code"})
+
+if "latitude" in country_df.columns:
+    country_df = country_df.rename(columns={"latitude": "Latitude"})
+
+if "longitude" in country_df.columns:
+    country_df = country_df.rename(columns={"longitude": "Longitude"})
+required_cols = ["Country_Code", "Latitude", "Longitude"]
+
+missing = [col for col in required_cols if col not in country_df.columns]
+
+if missing:
+    st.error(f"Missing columns in country file: {missing}")
+    st.stop()
 
 country_df["Country_Code"] = country_df["Country_Code"].astype(str).str.strip().str.upper()
 
