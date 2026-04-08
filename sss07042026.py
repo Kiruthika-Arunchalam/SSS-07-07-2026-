@@ -78,16 +78,27 @@ st.markdown('<div class="title">SSS DATA ANALYTICS DASHBOARD</div>', unsafe_allo
 # LOAD DATA (NO CACHE ISSUE)
 # ---------------------------
 def load_data():
-    zip_file = [f for f in os.listdir() if f.endswith(".zip")][0]
+    zip_files = [f for f in os.listdir() if f.endswith(".zip")]
+
+    if not zip_files:
+        st.error("❌ No ZIP file found in directory")
+        st.stop()
+
+    zip_file = zip_files[0]
 
     with zipfile.ZipFile(zip_file) as z:
-        file_name = [f for f in z.namelist() if f.endswith(".csv")][0]
+        csv_files = [f for f in z.namelist() if f.endswith(".csv")]
+
+        if not csv_files:
+            st.error("❌ No CSV file found inside ZIP")
+            st.stop()
+
+        file_name = csv_files[0]
+
         with z.open(file_name) as f:
             df = pd.read_csv(f, encoding="cp1252")
 
     return df
-
-df = load_data()
 
 
 
