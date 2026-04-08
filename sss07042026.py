@@ -311,7 +311,13 @@ import streamlit as st
 # =========================================================
 # LOAD COUNTRY DATA
 # =========================================================
-country_df = pd.read_csv("country_lat_lon.csv")
+import os
+
+if os.path.exists("country_lat_lon.csv"):
+    country_df = pd.read_csv("country_lat_lon.csv")
+else:
+    st.warning("⚠️ country_lat_lon.csv not found")
+    st.stop()
 
 country_df = country_df.rename(columns={
     "country_code": "Country_Code",
