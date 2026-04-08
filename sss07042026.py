@@ -213,7 +213,7 @@ st.dataframe(final_df, use_container_width=True)
 # ---------------------------
 # OPERATOR TREND
 # ---------------------------
-st.markdown('<div class="section">Operator Count</div>', unsafe_allow_html=True)
+st.markdown('<div class="section">Operator Count(07-04-2026)</div>', unsafe_allow_html=True)
 
 trend = filtered_df["Operator_Code"].value_counts().reset_index()
 trend.columns = ["Operator", "Count"]
@@ -467,7 +467,7 @@ tooltip = {
 # =========================================================
 # DISPLAY MAP
 # =========================================================
-st.markdown("### Top Routes map (Under Development")
+st.markdown("### Top Routes Map")
 
 st.pydeck_chart(pdk.Deck(
     layers=[arc_layer],
